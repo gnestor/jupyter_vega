@@ -1,5 +1,4 @@
-from IPython.display import display
-from .utils import prepare_spec
+from IPython.display import display, JSON
 import json
 
 
@@ -22,23 +21,37 @@ def _jupyter_nbextension_paths():
     }]
 
 
-# A display function that can be used within a notebook. E.g.:
+# A display class that can be used within a notebook. E.g.:
 #   from jupyterlab_vega import Vega
 #   Vega(data)
+    
+class Vega(JSON):
+    """A display class for displaying Vega visualizations in the Jupyter Notebook and IPython kernel.
+    
+    Vega expects a JSON-able dict, not serialized JSON strings.
 
-def Vega(data):
-    bundle = {
-        'application/vnd.vega.v2+json': data,
-        'application/json': data,
-        'text/plain': '<jupyterlab_vega.Vega object>'
-    }
-    display(bundle, raw=True)
+    Scalar types (None, number, string) are not allowed, only dict containers.
+    """
 
-def VegaLite(spec, data):
-    data = prepare_spec(spec, data)
-    bundle = {
-        'application/vnd.vegalite.v1+json': data,
-        'application/json': data,
-        'text/plain': json.dumps(data, indent=4)
-    }
-    display(bundle, raw=True)
+    # @property
+    # def data(self):
+    #     return self._data
+    # 
+    # @data.setter
+    # def data(self, data):
+    #     if isinstance(data, str):
+    #         data = json.loads(data)
+    #     self._data = data
+
+    def _data_and_metadata(self):
+        return self.data, self.metadata
+    
+    def _ipython_display_(self):
+        bundle = {
+            'application/vnd.vega.v2+json': self.data,
+            'text/plain': '<jupyterlab_vega.Vega object>'
+        }
+        metadata = {
+            'application/vnd.vega.v2+json': self.metadata
+        }
+        display(bundle, metadata=metadata, raw=True) 
