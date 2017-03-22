@@ -37,7 +37,23 @@ export function register_renderer(notebook) {
         renderedCallback: (error, result) => {
           if (error) return console.log(error);
           // Add a static image output to mime bundle
-          const imageData = result.view.toImageURL().split(',')[1];
+          result.view
+            .toImageURL('png')
+            .then(url => {
+              const data = url.split(',')[1];
+              this.outputs
+                .filter(
+                  output =>
+                    output.data[VEGA_MIME_TYPE] ||
+                    output.data[VEGALITE_MIME_TYPE]
+                )
+                .forEach(output => {
+                  output.data['image/png'] = data;
+                });
+            })
+            .catch(error => {
+              console.log(error);
+            });
         }
       };
       render(props, toinsert[0]);
