@@ -25,14 +25,14 @@ function activatePlugin(app, rendermime, registry) {
    */
   rendermime.addRenderer(
     {
-      mimeType: 'application/vnd.vega.v2+json',
+      mimeType: 'application/vnd.vega.v3+json',
       renderer: new VegaOutput()
     },
     index
   );
   rendermime.addRenderer(
     {
-      mimeType: 'application/vnd.vegalite.v1+json',
+      mimeType: 'application/vnd.vegalite.v2+json',
       renderer: new VegaLiteOutput()
     },
     index

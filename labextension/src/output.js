@@ -6,6 +6,8 @@ import Vega from 'jupyterlab_vega_react';
 /**
  * The class name added to this OutputWidget.
  */
+const VEGA_MIME_TYPE = 'application/vnd.vega.v3+json';
+const VEGALITE_MIME_TYPE = 'application/vnd.vegalite.v2+json';
 const CLASS_NAME = 'jp-OutputWidgetVega';
 
 /**
@@ -43,7 +45,7 @@ export class OutputWidget extends Widget {
     const props = {
       data,
       // metadata,
-      embedMode: this._mimeType === 'application/vnd.vegalite.v1+json'
+      embedMode: this._mimeType === VEGALITE_MIME_TYPE
         ? 'vega-lite'
         : 'vega',
       renderedCallback: (error, result) => {
@@ -61,7 +63,7 @@ export class VegaOutput {
   /**
    * The mime types this OutputRenderer accepts.
    */
-  mimeTypes = ['application/vnd.vega.v2+json'];
+  mimeTypes = [VEGA_MIME_TYPE];
 
   /**
    * Whether the renderer can render given the render options.
@@ -82,7 +84,7 @@ export class VegaLiteOutput {
   /**
    * The mime types this OutputRenderer accepts.
    */
-  mimeTypes = ['application/vnd.vegalite.v1+json'];
+  mimeTypes = [VEGALITE_MIME_TYPE];
 
   /**
    * Whether the renderer can render given the render options.
