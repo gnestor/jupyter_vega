@@ -8,10 +8,17 @@ const VEGALITE_MIME_TYPE = 'application/vnd.vegalite.v2+json';
 const CLASS_NAME = 'output_Vega rendered_html';
 
 /**
- * Render data to the output area
+ * Render data to DOM node in output area
  */
 function render(props, node) {
   ReactDOM.render(<Vega {...props} />, node);
+}
+
+/**
+ * Dispose renderer when output area is cleared or removed
+ */
+function handleClearOutput(event, { cell: { output_area } }) {
+  if (output_area.node) ReactDOM.unmountComponentAtNode(output_area.node);
 }
 
 /**
@@ -25,16 +32,19 @@ export function register_renderer(notebook) {
     .reduce((result, cell) => cell.output_area ? cell : result, {});
   // A function to render output of 'application/vnd.vega.v3+json' mime type
   function append_mime(mimetype) {
-    const embedMode = mimetype === 'application/vnd.vegalite.v1+json'
-      ? 'vega-lite'
-      : 'vega';
-    return function(json, md, element) {
-      const toinsert = this.create_output_subarea(md, CLASS_NAME, mimetype);
+    return function(data, metadata, element) {
+      const toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        mimetype
+      );
+      this.node = toinsert[0];
       this.keyboard_manager.register_events(toinsert);
       const props = {
-        data: json,
-        embedMode,
-        renderedCallback: (error, result) => {
+        data,
+        metadata: metadata[mimetype],
+        mode: mimetype === VEGALITE_MIME_TYPE ? 'vega-lite' : 'vega',
+        callback: (error, result) => {
           if (error) return console.log(error);
           // Add a static image output to mime bundle
           result.view
@@ -61,6 +71,8 @@ export function register_renderer(notebook) {
       return toinsert;
     };
   }
+  // When an output is cleared,
+  output_area.events.on('clear_output.CodeCell', handleClearOutput);
   // Calculate the index of this renderer in `output_area.display_order`
   // e.g. Insert this renderer after any renderers with mime type that matches "+json"
   // const mime_types = output_area.mime_types();
@@ -69,46 +81,42 @@ export function register_renderer(notebook) {
   // // ...or just insert it at the top
   const index = 0;
   // Register the mime type and append_mime_type function with the notebook's output_area
+  output_area.register_mime_type(VEGA_MIME_TYPE, append_mime(VEGA_MIME_TYPE), {
+    // Is output safe?
+    safe: true,
+    // Index of renderer in `output_area.display_order`
+    index: index
+  });
   output_area.register_mime_type(
-    VEGA_MIME_TYPE, 
-    append_mime(VEGA_MIME_TYPE), 
+    VEGALITE_MIME_TYPE,
+    append_mime(VEGALITE_MIME_TYPE),
     {
       // Is output safe?
       safe: true,
       // Index of renderer in `output_area.display_order`
       index: index
     }
-);
-output_area.register_mime_type(
-  VEGALITE_MIME_TYPE,
-  append_mime(VEGALITE_MIME_TYPE),
-  {
-    // Is output safe?
-    safe: true,
-    // Index of renderer in `output_area.display_order`
-    index: index
-  }
-);
-
+  );
 }
 
 /**
  * Re-render cells with output data of 'application/vnd.vega.v3+json' mime type
  * on load notebook
  */
- export function render_cells(notebook) {
-   // Get all cells in notebook
-   notebook.get_cells().forEach(cell => {
-     // If a cell has output data of 'application/geo+json' mime type
-     if (
-       cell.output_area &&
-       cell.output_area.outputs.find(output => 
-         output.data &&
-         (output.data[VEGA_MIME_TYPE] || output.data[VEGALITE_MIME_TYPE])
-       )
-     ) {
-       // Re-render the cell by executing it
-       notebook.render_cell_output(cell);
-     }
-   });
- }
+export function render_cells(notebook) {
+  // Get all cells in notebook
+  notebook.get_cells().forEach(cell => {
+    // If a cell has output data of 'application/geo+json' mime type
+    if (
+      cell.output_area &&
+      cell.output_area.outputs.find(
+        output =>
+          output.data &&
+          (output.data[VEGA_MIME_TYPE] || output.data[VEGALITE_MIME_TYPE])
+      )
+    ) {
+      // Re-render the cell by executing it
+      notebook.render_cell_output(cell);
+    }
+  });
+}

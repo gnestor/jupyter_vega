@@ -8,17 +8,17 @@ const DEFAULT_HEIGHT = DEFAULT_WIDTH / 1.5;
 export default class Vega extends React.Component {
   
   static defaultProps = {
-    renderedCallback: () => ({}),
-    embedMode: 'vega-lite'
+    callback: () => ({}),
+    mode: 'vega-lite'
   };
 
   componentDidMount() {
     this.embed();
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props.data !== nextProps.data;
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return this.props.data !== nextProps.data;
+  // }
 
   componentDidUpdate() {
     this.embed();
@@ -29,9 +29,9 @@ export default class Vega extends React.Component {
   }
 
   embed = () => {
-    const { data: spec, embedMode: mode, renderedCallback: cb } = this.props;
+    const { data, mode, callback } = this.props;
     const options = {
-      mode: this.props.embedMode,
+      mode,
       actions: true,
       config: mode === 'vega-lite'
         ? {
@@ -39,6 +39,6 @@ export default class Vega extends React.Component {
           }
         : {}
     };
-    vegaEmbed(this.el, spec, options, cb);
+    vegaEmbed(this.el, data, options, callback);
   };
 }

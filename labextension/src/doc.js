@@ -60,7 +60,7 @@ export class DocWidget extends Widget {
         const path = this._context._path;
         const props = {
           data,
-          embedMode: path.includes('.vl') ? 'vega-lite' : 'vega'
+          mode: path.includes('.vl') ? 'vega-lite' : 'vega'
         };
         ReactDOM.render(<Vega {...props} />, this.node);
       } catch (error) {

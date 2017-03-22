@@ -18,7 +18,7 @@ export class OutputWidget extends Widget {
     super();
     this.addClass(CLASS_NAME);
     this._data = options.model.data;
-    // this._metadata = options.model.metadata.get(options.mimeType);
+    this._metadata = options.model.metadata;
     this._mimeType = options.mimeType;
   }
 
@@ -40,15 +40,13 @@ export class OutputWidget extends Widget {
    * A render function given the widget's DOM node.
    */
   _render() {
-    const data = this._data.get(this._mimeType);
-    // const metadata = this._metadata.get(this._mimeType);
     const props = {
-      data,
-      // metadata,
-      embedMode: this._mimeType === VEGALITE_MIME_TYPE
+      data: this._data.get(this._mimeType),
+      metadata: this._metadata.get(this._mimeType),
+      mode: this._mimeType === VEGALITE_MIME_TYPE
         ? 'vega-lite'
         : 'vega',
-      renderedCallback: (error, result) => {
+      callback: (error, result) => {
         if (error) return console.log(error);
         // Add a static image output to mime bundle
         result.view
