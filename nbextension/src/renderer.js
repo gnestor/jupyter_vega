@@ -33,9 +33,6 @@ function handleClearOutput(event, { cell: { output_area } }) {
 export function register_renderer(notebook, events, OutputArea) {
   /* A function to render output of 'application/vnd.vega.v2+json' mime type */
   const append_mime = function(mimetype) {
-    const embedMode = mimetype === 'application/vnd.vegalite.v1+json'
-      ? 'vega-lite'
-      : 'vega';
     return function(data, metadata, element) {
       /* Create a DOM node to render to */
       const toinsert = this.create_output_subarea(
@@ -46,12 +43,12 @@ export function register_renderer(notebook, events, OutputArea) {
       this.keyboard_manager.register_events(toinsert);
       /* Render data to DOM node */
       const props = {
-        data,
+        spec: data,
         metadata: metadata[mimetype],
-        embedMode,
-        width: element.width(),
-        height: DEFAULT_HEIGHT,
-        renderedCallback: (error, result) => {
+        mode: mimetype === 'application/vnd.vegalite.v1+json'
+          ? 'vega-lite'
+          : 'vega',
+        callback: (error, result) => {
           if (error) return console.log(error);
           // Add a static image output to mime bundle
           const imageData = result.view.toImageURL().split(',')[1];

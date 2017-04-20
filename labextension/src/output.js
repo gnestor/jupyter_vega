@@ -48,10 +48,12 @@ export class OutputWidget extends Widget {
    */
   _render() {
     const props = {
-      data: this._data.get(this._mimeType),
+      spec: this._data.get(this._mimeType),
       metadata: this._metadata.get(this._mimeType),
-      embedMode: this._mimeType === VEGALITE_MIME_TYPE ? 'vega-lite' : 'vega',
-      renderedCallback: (error, result) => {
+      mode: this._mimeType === VEGALITE_MIME_TYPE
+        ? 'vega-lite'
+        : 'vega',
+      callback: (error, result) => {
         if (error) return console.log(error);
         // Add a static image output to mime bundle
         const imageData = result.view.toImageURL().split(',')[1];
