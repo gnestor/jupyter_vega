@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VegaComponent from 'jupyterlab_vega_react';
+import VegaComponent from 'jupyter_vega_react';
 import './index.css';
 
 const VEGA_MIME_TYPE = 'application/vnd.vega.v2+json';

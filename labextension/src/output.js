@@ -1,7 +1,7 @@
 import { Widget } from '@phosphor/widgets';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VegaComponent from 'jupyterlab_vega_react';
+import VegaComponent from 'jupyter_vega_react';
 
 const VEGA_MIME_TYPE = 'application/vnd.vega.v2+json';
 const VEGALITE_MIME_TYPE = 'application/vnd.vegalite.v1+json';
