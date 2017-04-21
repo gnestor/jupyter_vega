@@ -36,19 +36,6 @@ export class OutputWidget extends Widget {
   }
 
   /**
-   * A message handler invoked on a `'child-added'` message
-   */
-  onChildAdded(msg) {
-    /* e.g. Inject a static image representation into the mime bundle for
-     *  endering on Github, etc. 
-     */
-    // renderLibrary.toPng(this.node).then(url => {
-    //   const data = url.split(',')[1];
-    //   this._data.set('image/png', data);
-    // })
-  }
-
-  /**
    * A message handler invoked on a `'resize'` message
    */
   onResize(msg) {
@@ -63,9 +50,7 @@ export class OutputWidget extends Widget {
     const props = {
       data: this._data.get(this._mimeType),
       metadata: this._metadata.get(this._mimeType),
-      embedMode: this._mimeType === VEGALITE_MIME_TYPE
-        ? 'vega-lite'
-        : 'vega',
+      embedMode: this._mimeType === VEGALITE_MIME_TYPE ? 'vega-lite' : 'vega',
       renderedCallback: (error, result) => {
         if (error) return console.log(error);
         // Add a static image output to mime bundle

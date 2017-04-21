@@ -129,7 +129,7 @@ altair.Chart(cars).mark_point().encode(
 )
 ```
 
-To render a `.vg` file as a tree, simply open it:
+To render a `.vg` or `.vl` file in JupyterLab, simply open it:
 
 ![file renderer](http://g.recordit.co/GV5w7wQbcf.gif)
 
