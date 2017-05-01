@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VegaComponent from 'jupyterlab_vega_react';
-import './index.css';
+import VegaComponent from 'jupyter_vega_react';
+import '../index.css';
 
 const VEGA_MIME_TYPE = 'application/vnd.vega.v2+json';
 const VEGALITE_MIME_TYPE = 'application/vnd.vegalite.v1+json';
@@ -33,7 +33,7 @@ function handleAddOutput(event, { output, output_area }) {
   /* Get rendered DOM node */
   const toinsert = output_area.element.find(`.${CLASS_NAME.split(' ')[0]}`);
   /** e.g. Inject a static image representation into the mime bundle for
-   *  endering on Github, etc.
+   *  rendering on Github, etc.
    */
   // if (toinsert[0]) {
   //   renderLibrary.toPng(toinsert[0]).then(url => {

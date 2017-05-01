@@ -1,6 +1,6 @@
 import React from 'react';
 import vegaEmbed from 'vega-embed';
-import './index.css';
+import '../index.css';
 
 const DEFAULT_WIDTH = 840;
 const DEFAULT_HEIGHT = DEFAULT_WIDTH / 1.5;
