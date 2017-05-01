@@ -1,7 +1,7 @@
 import { Widget } from '@phosphor/widgets';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VegaComponent from 'jupyterlab_vega_react';
+import VegaComponent from 'jupyter_vega_react';
 
 const MIME_TYPE = 'application/vnd.vega.v2+json';
 const CLASS_NAME = 'jp-OutputWidgetVega';
@@ -27,7 +27,7 @@ export class OutputWidget extends Widget {
   }
 
   /**
-   * A message handler invoked on an `'before-detach'` message
+   * A message handler invoked on a `'before-detach'` message
    */
   onBeforeDetach(msg) {
     /* Dispose of resources used by this widget */

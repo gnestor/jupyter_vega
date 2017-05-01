@@ -5,7 +5,7 @@ from IPython.display import display, JSON
 
 def _jupyter_labextension_paths():
     return [{
-        'name': 'jupyterlab_vega',
+        'name': 'jupyter_vega',
         'src': 'static',
     }]
 
@@ -13,12 +13,12 @@ def _jupyter_nbextension_paths():
     return [{
         'section': 'notebook',
         'src': 'static',
-        'dest': 'jupyterlab_vega',
-        'require': 'jupyterlab_vega/extension'
+        'dest': 'jupyter_vega',
+        'require': 'jupyter_vega/extension'
     }]
 
 # A display class that can be used within a notebook. 
-#   from jupyterlab_vega import Vega
+#   from jupyter_vega import Vega
 #   Vega(data)
     
 class Vega(JSON):
@@ -32,7 +32,7 @@ class Vega(JSON):
     def _ipython_display_(self):
         bundle = {
             'application/vnd.vega.v2+json': self.data,
-            'text/plain': '<jupyterlab_vega.Vega object>'
+            'text/plain': '<jupyter_vega.Vega object>'
         }
         metadata = {
             'application/vnd.vega.v2+json': self.metadata
