@@ -72,8 +72,8 @@ export class OutputWidget extends Widget {
         const imageData = result.view.toImageURL().split(',')[1];
         this._data.set('image/png', imageData);
       },
-      width: this.node.offsetWidth,
-      height: this.node.offsetHeight
+      width: this.node.offsetWidth - 50,
+      height: this.node.offsetHeight - 80
     };
     ReactDOM.render(<VegaComponent {...props} />, this.node);
   }

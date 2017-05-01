@@ -115,8 +115,8 @@ export class DocWidget extends Widget {
       const props = {
         data: JSON.parse(content),
         embedMode: this._context._path.includes('.vl') ? 'vega-lite' : 'vega',
-        width: this.node.offsetWidth,
-        height: this.node.offsetHeight
+        width: this.node.offsetWidth - 50,
+        height: this.node.offsetHeight - 80
       };
       ReactDOM.render(<VegaComponent {...props} />, this.node);
     } catch (error) {

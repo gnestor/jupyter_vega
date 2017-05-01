@@ -70,8 +70,8 @@ export function register_renderer(notebook, events, OutputArea) {
         data,
         metadata: metadata[mimetype],
         embedMode,
-        width: element.width(),
-        height: DEFAULT_HEIGHT,
+        width: this.element.width() - this.prompt_overlay.width(),
+        height: this.element.height() || DEFAULT_HEIGHT,
         renderedCallback: (error, result) => {
           if (error) return console.log(error);
           // Add a static image output to mime bundle
